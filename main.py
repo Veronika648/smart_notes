@@ -1,4 +1,8 @@
 from PyQt6.QtWidgets import *
+from help_file import *
+
+notes = read_from_file()
+
 
 app = QApplication([])
 window = QWidget()
@@ -6,7 +10,9 @@ window = QWidget()
 notes_text = QTextEdit()
 
 notes_list_lbl = QLabel("список заміток")
+
 notes_list = QListWidget()
+notes_list.addItems(notes)
 teg_list_lbl = QLabel("Список тегів")
 teg_list = QListWidget()
 
@@ -35,12 +41,23 @@ v1.addWidget(teg_list)
 new_teg_lbl = ("Введіть тег...")
 new_teg_input = QLineEdit()
 
-v1.addWidget(new_teg_lbl)
+#v1.addWidget(new_teg_lbl)
 v1.addWidget(new_teg_input)
 
 
 
 main_line.addLayout(v1)
+
+def show_note():
+    key = notes_list.currentItem().text()
+    notes_text.setText(notes[key]["текст"])
+    teg_list.clear()
+    teg_list.addItems(notes[key]["теги"])
+
+notes_list.itemClicked.connect(show_note)
+
+
+
 
 window.setLayout(main_line)
 window.show()
